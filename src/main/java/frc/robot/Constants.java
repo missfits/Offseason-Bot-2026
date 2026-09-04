@@ -24,6 +24,8 @@ import frc.robot.generated.TunerConstants;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
+    public static final int kTestControllerPort = 2;
 
     // Joystick deadband values
     public static final double DRIVE_JOYSTICK_DEADBAND = 0.1;
@@ -50,6 +52,14 @@ public final class Constants {
     public static final double DRIVE_KV = 0.124;
     public static final double DRIVE_KA = 0;
 
+    // Drive motor current limits (in Amps)
+    public static final double DRIVE_STATOR_CURRENT_LIMIT = 80;
+    public static final double DRIVE_SUPPLY_CURRENT_LIMIT = 45;
+
+    // Steer motor current limits (in Amps)
+    public static final double STEER_STATOR_CURRENT_LIMIT = 60;
+    public static final double STEER_SUPPLY_CURRENT_LIMIT = 40;
+
     public static final double WHEEL_RADIUS_FUDGE_FACTOR = 1.0;
 
     // Max speeds for drivetrain
@@ -57,9 +67,18 @@ public final class Constants {
     public static final double MAX_ROTATION_SPEED = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     // Rotation heading controller PID gains
-    public static final double ROTATION_KP = 10.0;
+    public static final double ROTATION_KP = 5.0;
     public static final double ROTATION_KI = 0.0;
     public static final double ROTATION_KD = 0.0;
+
+    // PID constants for PathPlanner AutoBuilder
+    public static double ROBOT_POSITION_P = 5.0;
+    public static double ROBOT_POSITION_I = 0;
+    public static double ROBOT_POSITION_D = 0;
+    public static double ROBOT_ROTATION_P = 5.0;
+    public static double ROBOT_ROTATION_I = 0;
+    public static double ROBOT_ROTATION_D = 0;
+
   }
 
   public static class AngularMechanismConstants {
@@ -74,33 +93,6 @@ public final class Constants {
     public static final int MOTOR_STATOR_LIMIT = 0;
 
     public static final double METERS_PER_ROTATION = 0;
-  }
-  
-  public static class VisionConstants {
-    // --- vision utils ---
-    public static final double MAX_VISION_POSE_DISTANCE = 1;
-    public static final double MAX_VISION_POSE_Z = 0.1;
-    public static final double MAX_VISION_POSE_ROLL = 0.05; // in radians
-    public static final double MAX_VISION_POSE_PITCH = 0.05; // in radians
-
-    // --- localization camera ---
-    // default vision standard deviation
-    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(6, 6, 4);
-    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 0.3);
-
-    public static final double VISION_DISTANCE_DISCARD = 10; 
-    public static final double MAX_POSE_AMBIGUITY = 0.2;
-    public static final double MAX_AVG_DIST_BETWEEN_LAST_EST_POSES = 0.3; // in meters 
-    public static final double MAX_AVG_SPEED_BETWEEN_LAST_EST_POSES = MAX_AVG_DIST_BETWEEN_LAST_EST_POSES * 50.;
-    public static final int NUM_LAST_EST_POSES = 3;
-    public static final double STD_DEV_SCALER = 30;
-
-    // --- vision subsystem ---
-    // (camera setup)
-    public static final String CAMERA1_NAME = null;
-    public static final String CAMERA2_NAME = null;
-    public static final Transform3d ROBOT_TO_CAM1_3D = null;
-    public static final Transform3d ROBOT_TO_CAM2_3D = null;
   }
   
   public static class LEDConstants { // placeholder constants

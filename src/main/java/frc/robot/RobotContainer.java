@@ -53,13 +53,18 @@ public class RobotContainer {
 
   private final CommandXboxController m_driverJoystick =
     new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_operatorJoystick =
+    new CommandXboxController(OperatorConstants.kOperatorControllerPort); // unclear if there's going to be only one operator
+  private final CommandXboxController m_testJoystick =
+    new CommandXboxController(OperatorConstants.kTestControllerPort);
 
   private final Field2d m_actualField = new Field2d(); // field simulation
 
   /** The container for the robot. Contains subsystems and commands. */
   public RobotContainer() {
     // Configure trigger bindings
-    configureBindings();
+    configureBindingsCompetition();
+    configureBindingsTestingMechanism();
 
     // Configure auto builder
     createNamedCommands();
@@ -72,10 +77,12 @@ public class RobotContainer {
     DriverStation.silenceJoystickConnectionWarning(true); // Turn off unplugged joystick errors
   }
 
+  // ---- CONFIGURE BINDING ----
+
   /**
    * Define trigger -> command mappings 
    */
-  private void configureBindings() {
+  private void configureBindingsCompetition() {
     // Default drive
     m_drivetrain.setDefaultCommand(
       // Drivetrain will execute this command periodically
@@ -95,6 +102,12 @@ public class RobotContainer {
 
     m_drivetrain.registerTelemetry(logger::telemeterize);
   }
+
+  private void configureBindingsTestingMechanism(){
+    // use m_testJoystick bindings
+  }
+
+
 
   /**
    * Define named commands for autonomous paths
