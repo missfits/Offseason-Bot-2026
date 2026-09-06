@@ -79,6 +79,15 @@ public final class Constants {
     public static double ROBOT_ROTATION_I = 0;
     public static double ROBOT_ROTATION_D = 0;
 
+    // angle tolerance (in radians) for atTargetAngle()
+    public static final double ANGLE_TOLERANCE = Math.toRadians(5);
+
+    // velocity tolerance (in m/s) for velocityNonZero()
+    public static final double VELOCITY_TOLERANCE = 0.2;
+
+    // Snap to target distance threshold (meters)
+    // If robot is within this distance of target, maintain current heading
+    public static final double SNAP_TO_TARGET_DISTANCE_THRESHOLD = 0.05; // 5cm
   }
 
   public static class AngularMechanismConstants {
