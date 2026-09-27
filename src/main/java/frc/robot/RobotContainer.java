@@ -12,8 +12,7 @@ import frc.robot.subsystems.drivetrain.Telemetry;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.DrivetrainConstants;
-import frc.robot.Constants.VisionConstants;
-
+import frc.robot.RobotContainer.JoystickVals;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -27,6 +26,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.photonvision.EstimatedRobotPose;
 
@@ -42,7 +42,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 public class RobotContainer {
   public static record JoystickVals(double x, double y) {}
 
-  private final SendableChooser<Command> m_autoChooser; // Sendable chooser that holds the autos
+  // private final SendableChooser<Command> m_autoChooser; // Sendable chooser that holds the autos // AUTOS DISABLED
   private final Telemetry logger = new Telemetry(DrivetrainConstants.MAX_TRANSLATION_SPEED);
 
   // Subsystems
@@ -58,6 +58,12 @@ public class RobotContainer {
   private final CommandXboxController m_testJoystick =
     new CommandXboxController(OperatorConstants.kTestControllerPort);
 
+  // Joystick suppliers
+  private final Supplier<JoystickVals> m_driverTranslationJoystickValsSupplier =
+    () -> new JoystickVals(m_driverJoystick.getLeftX(), m_driverJoystick.getLeftY());
+  private final Supplier<JoystickVals> m_driverRotationJoystickValsSupplier =
+    () -> new JoystickVals(m_driverJoystick.getRightX(), m_driverJoystick.getRightY());
+
   private final Field2d m_actualField = new Field2d(); // field simulation
 
   /** The container for the robot. Contains subsystems and commands. */
@@ -66,10 +72,10 @@ public class RobotContainer {
     configureBindingsCompetition();
     configureBindingsTestingMechanism();
 
-    // Configure auto builder
-    createNamedCommands();
-    m_autoChooser = AutoBuilder.buildAutoChooser("drive forward 1m");
-    SmartDashboard.putData("Auto Chooser", m_autoChooser);
+    // Configure auto builder // AUTOS DISABLED - not running autos, only driving
+    // createNamedCommands();
+    // m_autoChooser = AutoBuilder.buildAutoChooser("drive forward 1m");
+    // SmartDashboard.putData("Auto Chooser", m_autoChooser);
 
     // Data logging
     DataLogManager.start(); // Starts recording to data log
@@ -83,22 +89,21 @@ public class RobotContainer {
    * Define trigger -> command mappings 
    */
   private void configureBindingsCompetition() {
+    // --- DRIVER COMMANDS ---
     // Default drive
     m_drivetrain.setDefaultCommand(
       // Drivetrain will execute this command periodically
       m_drivetrainCommandFactory.defaultDrive(
-        new JoystickVals(m_driverJoystick.getLeftX(), m_driverJoystick.getLeftY()),
-        new JoystickVals(m_driverJoystick.getRightX(), m_driverJoystick.getRightY()),
-        false)
+        m_driverTranslationJoystickValsSupplier,
+        m_driverRotationJoystickValsSupplier
+      )
     );
 
-    // Drive in slowmode while right trigger is pressed
-    m_driverJoystick.rightTrigger().whileTrue(
-      m_drivetrainCommandFactory.defaultDrive(
-        new JoystickVals(m_driverJoystick.getLeftX(), m_driverJoystick.getLeftY()),
-        new JoystickVals(m_driverJoystick.getRightX(), m_driverJoystick.getRightY()),
-        true)
-    );
+    // reset drivetrain heading
+    m_driverJoystick.povCenter().onTrue(m_drivetrainCommandFactory.resetRotation());
+
+    // Drive in slowmode while right bumper is pressed
+    m_drivetrainCommandFactory.setSlowmodeButton(m_driverJoystick.rightBumper());
 
     m_drivetrain.registerTelemetry(logger::telemeterize);
   }
@@ -120,7 +125,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return m_autoChooser.getSelected();
+    // return m_autoChooser.getSelected(); // AUTOS DISABLED - not running autos, only driving
+    return null;
   }
 
 }
