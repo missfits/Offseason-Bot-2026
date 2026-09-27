@@ -99,7 +99,10 @@ public class RobotContainer {
       )
     );
 
-    // Drive in slowmode while right trigger is pressed
+    // reset drivetrain heading
+    m_driverJoystick.povCenter().onTrue(m_drivetrainCommandFactory.resetRotation());
+
+    // Drive in slowmode while right bumper is pressed
     m_drivetrainCommandFactory.setSlowmodeButton(m_driverJoystick.rightBumper());
 
     m_drivetrain.registerTelemetry(logger::telemeterize);
