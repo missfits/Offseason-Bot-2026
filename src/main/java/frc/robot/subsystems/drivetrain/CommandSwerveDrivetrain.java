@@ -177,7 +177,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         SwerveModuleConstants<?, ?, ?>... modules
     ) {
         super(drivetrainConstants, modules);
-        configureAutoBuilder();
+        // configureAutoBuilder(); // AUTOS DISABLED - avoids crash from missing PathPlanner settings.json
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -202,7 +202,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         SwerveModuleConstants<?, ?, ?>... modules
     ) {
         super(drivetrainConstants, odometryUpdateFrequency, modules);
-        configureAutoBuilder();
+        // configureAutoBuilder(); // AUTOS DISABLED - avoids crash from missing PathPlanner settings.json
         if (Utils.isSimulation()) {
             startSimThread();
         }

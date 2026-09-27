@@ -42,7 +42,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 public class RobotContainer {
   public static record JoystickVals(double x, double y) {}
 
-  private final SendableChooser<Command> m_autoChooser; // Sendable chooser that holds the autos
+  // private final SendableChooser<Command> m_autoChooser; // Sendable chooser that holds the autos // AUTOS DISABLED
   private final Telemetry logger = new Telemetry(DrivetrainConstants.MAX_TRANSLATION_SPEED);
 
   // Subsystems
@@ -72,10 +72,10 @@ public class RobotContainer {
     configureBindingsCompetition();
     configureBindingsTestingMechanism();
 
-    // Configure auto builder
-    createNamedCommands();
-    m_autoChooser = AutoBuilder.buildAutoChooser("drive forward 1m");
-    SmartDashboard.putData("Auto Chooser", m_autoChooser);
+    // Configure auto builder // AUTOS DISABLED - not running autos, only driving
+    // createNamedCommands();
+    // m_autoChooser = AutoBuilder.buildAutoChooser("drive forward 1m");
+    // SmartDashboard.putData("Auto Chooser", m_autoChooser);
 
     // Data logging
     DataLogManager.start(); // Starts recording to data log
@@ -122,7 +122,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return m_autoChooser.getSelected();
+    // return m_autoChooser.getSelected(); // AUTOS DISABLED - not running autos, only driving
+    return null;
   }
 
 }
